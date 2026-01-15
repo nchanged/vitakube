@@ -1,0 +1,18 @@
+{{- if and .Values.consumer.enabled .Values.consumer.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-consumer-pvc
+  labels:
+    app.kubernetes.io/name: vita-consumer
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.consumer.persistence.size }}
+  {{- if .Values.consumer.persistence.storageClass }}
+  storageClassName: {{ .Values.consumer.persistence.storageClass }}
+  {{- end }}
+{{- end }}

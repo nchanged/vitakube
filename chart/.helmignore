@@ -1,0 +1,26 @@
+# .helmignore patterns
+# This file contains patterns to ignore when packaging Helm charts
+
+# Version control
+.git/
+.gitignore
+
+# CI/CD
+.gitlab-ci.yml
+.travis.yml
+.circleci/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test and development files
+test/
+tests/
+*.test.yaml

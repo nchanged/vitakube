@@ -1,0 +1,66 @@
+# Default values for vita-agent (and consumer)
+
+# ------------------------------------------------------------------
+# AGENT CONFIG (DaemonSet)
+# ------------------------------------------------------------------
+agent:
+  enabled: true
+  image:
+    repository: nchanged/vita-agent
+    pullPolicy: Always
+    tag: "0.1.0"
+  
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  
+  # Metrics collection interval (seconds)
+  collectionInterval: 1
+  logLevel: info
+  
+  serviceAccount:
+    create: true
+    name: "vita-agent"
+
+# ------------------------------------------------------------------
+# CONSUMER CONFIG (Deployment)
+# ------------------------------------------------------------------
+consumer:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: nchanged/vita-consumer
+    pullPolicy: Always
+    tag: "0.1.0"
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: "" # Use default
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+  serviceAccount:
+    create: true
+    name: "vita-consumer"
+
+# ------------------------------------------------------------------
+# SHARED / GLOBAL
+# ------------------------------------------------------------------
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""

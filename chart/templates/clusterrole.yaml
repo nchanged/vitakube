@@ -1,0 +1,27 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "vita-agent.fullname" . }}
+  labels:
+    {{- include "vita-agent.labels" . | nindent 4 }}
+rules:
+  # Allow reading nodes
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "watch"]
+  # Allow reading node metrics
+  - apiGroups: [""]
+    resources: ["nodes/status"]
+    verbs: ["get"]
+  # Allow reading pods across all namespaces
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  # Allow reading pod status
+  - apiGroups: [""]
+    resources: ["pods/status"]
+    verbs: ["get"]
+  # Allow reading metrics from metrics server (if installed)
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["nodes", "pods"]
+    verbs: ["get", "list"]

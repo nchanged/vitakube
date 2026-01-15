@@ -1,0 +1,46 @@
+[package]
+name = "vita-agent"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Lightweight Kubernetes client (only for pod metadata)
+kube = { version = "0.95", features = ["client", "rustls-tls"], default-features = false }
+k8s-openapi = { version = "0.23", features = ["v1_31"], default-features = false }
+
+# Async runtime
+tokio = { version = "1.40", features = ["rt-multi-thread", "time", "macros"] }
+
+# HTTP client
+reqwest = { version = "0.11", features = ["json", "rustls-tls"], default-features = false }
+
+# Force older version of home crate to avoid Rust 1.88 requirement
+home = "=0.5.9"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Time utilities
+chrono = "0.4"
+libc = "0.2"
+
+[[bin]]
+name = "vita-agent"
+path = "src/main.rs"
+
+
+# Optimize for size and static linking
+[profile.release]
+opt-level = "z"     # Optimize for size
+lto = true          # Enable link-time optimization
+codegen-units = 1   # Better optimization
+strip = true        # Strip symbols for smaller binary
